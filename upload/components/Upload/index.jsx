@@ -29,6 +29,7 @@ export default function Upload(props) {
         data: file.slice(curSize, curSize + chunkSize),
         hash: `${file.name}_${i}`,
         name: file.name,
+        count: Math.ceil(file.size / chunkSize),
       })
       curSize += chunkSize;
     }
@@ -45,12 +46,12 @@ export default function Upload(props) {
   }
 
   async function uploadChunks(chunks) {
-    console.log("🚀 ~ file: index.jsx ~ line 48 ~ uploadChunks ~ chunks", chunks)
     const requestList = chunks.map(chunk => {
       const formData = new FormData();
       formData.append('chunk', chunk.data);
       formData.append('hash', chunk.hash);
       formData.append('filename', chunk.name);
+      formData.append('count', chunk.count);
 
       return formData;
     }).map(async (formData) => {
