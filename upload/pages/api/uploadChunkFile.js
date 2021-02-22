@@ -29,15 +29,18 @@ export default (req, res) => {
           fs.mkdirSync(chunkDir);
         }
 
-        // 保存切片到同名文件夹
-        fs.copyFileSync(chunk.path, path.resolve(chunkDir, hash));
+        const scripts = fs.readdirSync(chunkDir);
+
+        if (!scripts.includes(hash)) {
+          // 如果该切片不存在则保存切片到同名文件夹
+          fs.copyFileSync(chunk.path, path.resolve(chunkDir, hash));
+          scripts.push(hash);
+        }
 
         res.status(200).json({
           message: '上传成功',
           code: 10000,
         })
-
-        const scripts = fs.readdirSync(chunkDir);
 
         if (scripts.length === Number(count)) {
           if (!fs.existsSync(UPLOAD_FILE_DIR)) {
