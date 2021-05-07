@@ -88,18 +88,24 @@ class Promise {
     return promise2
   }
 
-const p = new PromiseSelf((resolve, reject) => {
-  resolve('success');
-  // setTimeout(() => {
-  //   resolve('success');
-  // }, 1000);
-})
+  static defer() {
+    let dfd = {};
+    dfd.promise = new Promise((resolve, reject) => {
+      dfd.resolve = resolve;
+      dfd.reject = reject;
+    })
+    return dfd;
+  }
 
-p.then((v) => {
-  console.log(v);
-}, (error) => {
-  console.log(error);
-})}
+  static deferred() {
+    let dfd = {};
+    dfd.promise = new Promise((resolve, reject) => {
+      dfd.resolve = resolve;
+      dfd.reject = reject;
+    })
+    return dfd;
+  }
+}
 
 function resolvePromise(promise2, x, resolve, reject) {
   if (promise2 === x) {

@@ -1,0 +1,15 @@
+{
+  "name": "promise",
+  "version": "1.0.0",
+  "description": "`promise`是一个有then方法的对象或函数，行为遵循本规范 `thenable`是一个有then方法的对象或者函数 `value`是`promise`成功状态时的值，包括`undefined`/`thenable`或者`promise` `exception`是一个使用throw抛出的异常值 `reason`是`promise`失败状态时的值",
+  "main": "Promise.js",
+  "dependencies": {
+    "promises-aplus-tests": "^2.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "promises-aplus-tests Promise.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
