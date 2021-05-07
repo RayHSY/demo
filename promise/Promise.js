@@ -33,6 +33,64 @@ class Promise {
     }
   }
 
+  static resolve(value) {
+    if (value instanceof Promise) return value;
+    return new Promise((resolve, reject) => {
+      if (value && value.then && typeof value.then === 'function') {
+        setTimeout(() => {
+          value.then(resolve, reject);
+        })
+      } else {
+        resolve(value);
+      }
+    })
+  }
+
+  static reject(value) {
+    return new Promise((resolve, reject) => {
+      reject(value);
+    })
+  }
+
+  static all(promises) {
+    return new Promise((resolve, reject) => {
+      const result = [];
+      let iteratorIndex = 0;
+      let fullCount;
+
+      for (const promise of promises) {
+        const resultIndex = iteratorIndex++;
+
+        Promise.resolve(promise).then(res => {
+          result[resultIndex] = res;
+          fullCount++;
+
+          if (fullCount === iteratorIndex) {
+            resolve(result);
+          }
+        }).catch(err => {
+          reject(err);
+        })
+      }
+
+      if (iteratorIndex === 0) {
+        resolve([]);
+      }
+    })
+  }
+
+  static race(promises) {
+    return new Promise((resolve, reject) => {
+      for (const promise of promises) {
+        Promise.resolve(promise).then((value) => {
+          return resolve(value);
+        }, err => {
+          return reject(err);
+        })
+      }
+    })
+  }
+
   then(onFulfilled, onRejected) {
 
     const self = this;
@@ -86,6 +144,18 @@ class Promise {
     })
 
     return promise2
+  }
+
+  catch(onRejected) {
+    return this.then(null, onRejected);
+  }
+
+  finally(callback) {
+    return this.then(value => {
+      return Promise.resolve(callback()).then(() => value);
+    }, err => {
+      return Promise.resolve(callback()).then(() => {throw err});
+    })
   }
 
   static defer() {

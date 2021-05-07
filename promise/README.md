@@ -69,3 +69,21 @@ resolvePromise(promise2, x, resolve, reject)
       * 否则，reject promise with e as the reason
   4. 如果 then 不是一个function. fulfill promise with x.
 * 如果 x 不是一个 object 或者 function，fulfill promise with x.
+
+
+## Promise的其它方法
+
+* Promise.resolve()
+* Promise.reject()
+* Promise.prototype.catch()
+* Promise.prototype.finally()
+* Promise.all()
+* Promise.race()
+
+### Promise.resolve
+
+> Promise.resolve(value) 返回一个以给定值解析后的Promise 对象.
+
+1. 如果 value 是个 thenable 对象，返回的promise会“跟随”这个thenable的对象，采用它的最终状态
+2. 如果传入的value本身就是promise对象，那么Promise.resolve将不做任何修改、原封不动地返回这个promise对象。
+3. 其他情况，直接返回以该值为成功状态的promise对象。
